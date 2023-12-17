@@ -1,6 +1,5 @@
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
@@ -41,7 +40,7 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.render("index", { user: req.user });
+  res.render("home", { user: req.user });
 });
 
 passport.use(
@@ -74,14 +73,62 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+app.get("/login", (req, res) => {
+  res.render("index", { user: req.user });
+});
+
+app.get("/signup", (req, res) => {
+  res.render("sign-up-form", { errorMessage: null }); // Empty error message on the first request
+});
+
+app.post("/signup", async (req, res, next) => {
+  try {
+    const existingMail = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ name: req.body.name });
+    if (existingMail) {
+      // If user already exists display the error
+      return res.render("sign-up-form", {
+        errorMessage: "Email already in use",
+      });
+    }
+    if (existingUser) {
+      // If user already exists display the error
+      return res.render("sign-up-form", {
+        errorMessage: "Username already taken",
+      });
+    }
+    // If the user doesn't exist, create a new user
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
+    const result = await user.save();
+    res.redirect("/");
+  } catch (err) {
+    return next(err);
+  }
+});
+
 app.post(
-  "/log-in",
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/loggedin",
     failureRedirect: "/loginfail",
+    failureFlash: true,
   })
 );
 
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+//Tests
 app.get("/loggedin", (req, res) => {
   res.send("HURRAY login done correctly");
 });

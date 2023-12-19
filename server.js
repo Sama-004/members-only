@@ -105,7 +105,7 @@ app.post("/signup", async (req, res, next) => {
     if (existingMail) {
       // If user already exists display the error
       return res.render("sign-up-form", {
-        errorMessage: "Email already in use",
+        errorMessage: "Email already registered",
       });
     }
     if (existingUser) {
@@ -141,16 +141,37 @@ app.get("/loggedin", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       // Fetch all messages from the database
-      const allMessages = await Message.find({}).populate("user", "name"); // Populate the 'user' field, retrieving only the 'username'
-
-      // Render the logged-in page and pass the messages data
-      res.render("loggedin", { user: req.user, messages: allMessages });
+      const allMessages = await Message.find({}).populate("user", "name");
+      // Render the logged-in page and the messages data
+      res.render("messages", { user: req.user, messages: allMessages });
     } catch (err) {
       console.error("Error fetching messages:", err);
-      res.redirect("/error"); // Redirect to an error page if fetching messages fails
+      res.redirect("/error"); // Redirect to an error page
     }
   } else {
-    res.redirect("/login"); // Redirect to login if the user is not authenticated
+    res.redirect("/login"); // Redirect to login
+  }
+});
+
+// Assuming you're using Express.js
+app.post("/postmessage", async (req, res) => {
+  const { title, message } = req.body;
+
+  // Assuming you have a Message model
+  const newMessage = new Message({
+    title: title,
+    text: message,
+    user: req.user._id,
+    timestamp: Date.now(),
+  });
+
+  try {
+    // Save the new message to the database
+    await newMessage.save();
+    res.redirect("/loggedin"); // Redirect to the logged-in page
+  } catch (error) {
+    console.error("Error saving message:", error);
+    res.redirect("/error"); // Redirect to an error page
   }
 });
 

@@ -7,11 +7,10 @@
 </head>
 
 <body>
-    <% if (user) {%>
-        <h1>WELCOME BACK <%= user.username %>
-        </h1>
-        <!-- <a href="/logout">LOG OUT</a> -->
-        <button onclick="window.location.href='/logout'">LOG OUT</button>
+    <% if (user) { %>
+        <script>
+            window.location.href = '/loggedin';
+        </script>
         <% } else { %>
             <h1>please log in</h1>
             <form action="/login" method="POST">
@@ -21,15 +20,15 @@
                 <input name="password" type="password" />
                 <button>Log In</button>
             </form>
-            <%}%>
+            <% } %>
                 <% if(errorMessage) { %>
                     <p style="color: red;">
-                        <%=errorMessage %>
+                        <%= errorMessage %>
                     </p>
                     <% } %>
+
                         <br>
                         <button onclick="window.location.href='/'">Home</button>
-
 </body>
 
 </html>

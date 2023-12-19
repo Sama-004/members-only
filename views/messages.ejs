@@ -8,6 +8,21 @@
 
 <body>
     <h1>Welcome <%= user.name %>!</h1>
+    <form action="/logout" method="get" class="logout-btn">
+        <button type="submit">Logout</button>
+    </form>
+
+    <!-- Form to post messages -->
+    <h2>Post a Message:</h2>
+    <form action="/postmessage" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Post Message</button>
+    </form>
 
     <% if (messages.length> 0) { %>
         <h2>All Messages:</h2>
@@ -19,14 +34,13 @@
                     </strong><br>
                     <em>From: <%= message.user.name %> <br> On - <%= message.timestamp %></em><br>
                     <%= message.text %>
-                </li>
+                </li><br>
                 <% }); %>
         </ul>
         <% } else { %>
             <p>No messages available.</p>
             <% } %>
 
-                <!-- Your other HTML content here -->
 </body>
 
 </html>

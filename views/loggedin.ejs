@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Logged In</title>
+</head>
+
+<body>
+    <h1>Welcome <%= user.name %>!</h1>
+
+    <% if (messages.length> 0) { %>
+        <h2>All Messages:</h2>
+        <ul>
+            <% messages.forEach(message=> { %>
+                <li>
+                    <strong>
+                        <%= message.title %>
+                    </strong><br>
+                    <em>From: <%= message.user.username %> <br> On - <%= message.timestamp %></em><br>
+                    <%= message.text %>
+                </li>
+                <% }); %>
+        </ul>
+        <% } else { %>
+            <p>No messages available.</p>
+            <% } %>
+
+                <!-- Your other HTML content here -->
+</body>
+
+</html>

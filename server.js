@@ -8,6 +8,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const app = express();
+const Message = require("./models/messages");
+// const User = require("./models/users");
 
 // Set up mongoose connection
 const mongoDB = process.env.MONGODB_URL;
@@ -48,7 +50,7 @@ passport.use(
     try {
       const user = await User.findOne({ name: name });
       if (!user) {
-        return done(null, false, { message: "Incorrect name" });
+        return done(null, false, { message: "User not found" });
       }
       if (user.password !== password) {
         return done(null, false, { message: "Incorrect password" });
@@ -74,9 +76,24 @@ passport.deserializeUser(async (id, done) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("index", { user: req.user });
+  res.render("login", { user: req.user, errorMessage: null });
 });
 
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/loggedin",
+    failureRedirect: "/loginfail?error=wrongpassword",
+  })
+);
+
+app.get("/loginfail", (req, res) => {
+  let errorMessage = "";
+  if (req.query.error === "wrongpassword") {
+    errorMessage = "Incorrect password. Please try again.";
+  }
+  res.render("login", { user: req.user, errorMessage });
+});
 app.get("/signup", (req, res) => {
   res.render("sign-up-form", { errorMessage: null }); // Empty error message on the first request
 });
@@ -110,15 +127,6 @@ app.post("/signup", async (req, res, next) => {
   }
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/loggedin",
-    failureRedirect: "/loginfail",
-    failureFlash: true,
-  })
-);
-
 app.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
@@ -129,12 +137,26 @@ app.get("/logout", (req, res, next) => {
 });
 
 //Tests
-app.get("/loggedin", (req, res) => {
-  res.send("HURRAY login done correctly");
+app.get("/loggedin", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      // Fetch all messages from the database
+      const allMessages = await Message.find({});
+      // populate("user", "username"); // Populate the 'user' field, retrieving only the 'username'
+
+      // Render the logged-in page and pass the messages data
+      res.render("loggedin", { user: req.user, messages: allMessages });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.redirect("/error"); // Redirect to an error page if fetching messages fails
+    }
+  } else {
+    res.redirect("/login"); // Redirect to login if the user is not authenticated
+  }
 });
 
-app.get("/loginfail", (req, res) => {
-  res.send("OOPS login failed");
-});
+// app.get("/loggedin", (req, res) => {
+//   res.send("HURRAY login done correctly");
+// });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

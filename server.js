@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const app = express();
 const Message = require("./models/messages");
-// const User = require("./models/users");
+const User = require("./models/users");
 
 // Set up mongoose connection
 const mongoDB = process.env.MONGODB_URL;
@@ -20,18 +20,18 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
-const User = mongoose.model(
-  "User",
-  new Schema({
-    name: { type: String, required: true },
-    email: {
-      type: String,
-      required: true,
-      match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    },
-    password: { type: String, required: true },
-  })
-);
+// const User = mongoose.model(
+//   "User",
+//   new Schema({
+//     name: { type: String, required: true },
+//     email: {
+//       type: String,
+//       required: true,
+//       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+//     },
+//     password: { type: String, required: true },
+//   })
+// );
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -141,8 +141,7 @@ app.get("/loggedin", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       // Fetch all messages from the database
-      const allMessages = await Message.find({});
-      // populate("user", "username"); // Populate the 'user' field, retrieving only the 'username'
+      const allMessages = await Message.find({}).populate("user", "name"); // Populate the 'user' field, retrieving only the 'username'
 
       // Render the logged-in page and pass the messages data
       res.render("loggedin", { user: req.user, messages: allMessages });

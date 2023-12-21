@@ -164,13 +164,18 @@ app.get("/loggedin", async (req, res) => {
 // Assuming you're using Express.js
 app.post("/postmessage", async (req, res) => {
   const { title, message } = req.body;
-
+  const formattedDate = new Date(Date.now()).toLocaleString("en-US", {
+    timeZone: "Asia/Kolkata", // Change this to your desired timezone
+    dateStyle: "medium",
+    timeStyle: "long",
+  });
+  console.log(formattedDate);
   // Assuming you have a Message model
   const newMessage = new Message({
     title: title,
     text: message,
     user: req.user._id,
-    timestamp: Date.now(),
+    timestamp: formattedDate,
   });
 
   try {

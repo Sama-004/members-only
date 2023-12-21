@@ -10,8 +10,9 @@ const messageSchema = new Schema({
     required: true,
   },
   timestamp: {
-    type: Date,
-    default: Date.now,
+    // type: Date,
+    type: String,
+    // default: Date.now,
   },
   text: {
     type: String,

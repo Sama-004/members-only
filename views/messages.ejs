@@ -11,6 +11,8 @@
     <form action="/logout" method="get" class="logout-btn">
         <button type="submit">Logout</button>
     </form>
+    <br>
+    <form action="/" method="get" class="home-btn"><button type="home">Home</button></form>
 
     <!-- Form to post messages -->
     <h2>Post a Message:</h2>
@@ -32,7 +34,9 @@
                     <strong>
                         <%= message.title %>
                     </strong><br>
-                    <em>From: <%= message.user.name %> <br> On - <%= message.timestamp %></em><br>
+                    <em>From: <strong>
+                            <%= message.user.name %>
+                        </strong><br> On - <%= message.timestamp %></em><br>
                     <%= message.text %>
                 </li><br>
                 <% }); %>

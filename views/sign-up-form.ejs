@@ -4,28 +4,33 @@
 <head>
     <meta charset="UTF-8" />
     <title>Sign Up</title>
+    <link rel="stylesheet" href="/signup.css">
 </head>
 
 <body>
-    <h1>Sign Up</h1>
-    <% if(errorMessage) { %>
-        <p style="color: red;">
-            <%=errorMessage %>
-        </p>
-        <% } %>
-            <form action="" method="POST">
+    <form action="/signup" method="POST">
+        <% if(errorMessage) { %>
+            <p style="color: red;">
+                <%=errorMessage %>
+            </p>
+            <% } %>
+                <h1>Sign Up</h1>
                 <label for="name">name</label>
                 <input name="name" placeholder="name" type="text" />
                 <br>
                 <label for="email">Email</label>
                 <input name="email" placeholder="test@test.com" type="email" />
                 <br>
-                <label for="password">Password</label>
-                <input name="password" type="password" />
-                <button>Sign Up</button>
-            </form>
-            <br>
-            <button onclick="window.location.href='/'">Home</button>
+                <label for="password">Enter Password</label>
+                <input name="password" placeholder="Password" type="password" />
+                <br>
+                <label for="confirmPassword">Confirm Password:</label>
+                <input name="confirmPassword" placeholder="Password" type="password" required><br>
+                <div class="button-group">
+                    <button>Sign Up</button>
+                    <button onclick="window.location.href='/'">Home</button>
+                </div>
+    </form>
 </body>
 
 </html>

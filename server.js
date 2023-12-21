@@ -40,6 +40,7 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "views")));
 
 app.get("/", (req, res) => {
   res.render("home", { user: req.user });
@@ -112,6 +113,11 @@ app.post("/signup", async (req, res, next) => {
       // If user already exists display the error
       return res.render("sign-up-form", {
         errorMessage: "Username already taken",
+      });
+    }
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.render("sign-up-form", {
+        errorMessage: "Passwords do not match",
       });
     }
     // If the user doesn't exist, create a new user

@@ -106,7 +106,7 @@ app.post("/signup", async (req, res, next) => {
     if (existingMail) {
       // If user already exists display the error
       return res.render("sign-up-form", {
-        errorMessage: "Email already registered",
+        errorMessage: "A user already exists with this e-mail address",
       });
     }
     if (existingUser) {

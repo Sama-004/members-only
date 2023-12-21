@@ -3,32 +3,33 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title></title>
+    <title>Login</title>
+    <link rel="stylesheet" href="/login.css">
 </head>
 
 <body>
-    <% if (user) { %>
-        <script>
-            window.location.href = '/loggedin';
-        </script>
-        <% } else { %>
-            <h1>please log in</h1>
-            <form action="/login" method="POST">
-                <label for="username">Username</label>
-                <input name="username" placeholder="username" type="text" />
-                <label for="password">Password</label>
-                <input name="password" type="password" />
-                <button>Log In</button>
-            </form>
-            <% } %>
-                <% if(errorMessage) { %>
-                    <p style="color: red;">
-                        <%= errorMessage %>
-                    </p>
-                    <% } %>
-
-                        <br>
-                        <button onclick="window.location.href='/'">Home</button>
+    <form action="/login" method="POST">
+        <% if (user) { %>
+            <script>
+                window.location.href = '/loggedin';
+            </script>
+            <% } else { %>
+                <% } %>
+                    <% if(errorMessage) { %>
+                        <p style="color: red;">
+                            <%= errorMessage %>
+                        </p>
+                        <% } %>
+                            <h1>Log In</h1>
+                            <label for="username">Username</label>
+                            <input name="username" placeholder="Username" type="text" />
+                            <label for="password">Password</label>
+                            <input name="password" placeholder="Password" type="password" />
+                            <div class="button-group">
+                                <button>Log In</button>
+                                <button onclick="window.location.href='/'">Home</button>
+                                <div>
+    </form>
 </body>
 
 </html>

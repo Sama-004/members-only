@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Logged In</title>
+    <link rel="stylesheet" href="/messages.css">
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("postForm");
+            form.classList.toggle("visible");
+        }
+    </script>
 </head>
 
 <body>
@@ -12,11 +19,16 @@
         <button type="submit">Logout</button>
     </form>
     <br>
-    <form action="/" method="get" class="home-btn"><button type="home">Home</button></form>
+    <form action="/" method="get" class="home-btn">
+        <button type="home">Home</button>
+    </form>
+
+    <!-- Button to toggle the message form -->
+    <button onclick="toggleForm()">Post a Message</button>
 
     <!-- Form to post messages -->
-    <h2>Post a Message:</h2>
-    <form action="/postmessage" method="POST">
+    <form id="postForm" action="/postmessage" method="POST" class="form-style">
+        <h2>Post a Message:</h2>
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title" required><br>
 
@@ -26,6 +38,7 @@
         <button type="submit">Post Message</button>
     </form>
 
+    <!-- Display messages -->
     <% if (messages.length> 0) { %>
         <h2>All Messages:</h2>
         <ul>
@@ -44,7 +57,6 @@
         <% } else { %>
             <p>No messages available.</p>
             <% } %>
-
 </body>
 
 </html>

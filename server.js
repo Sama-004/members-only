@@ -141,7 +141,9 @@ app.get("/loggedin", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       // Fetch all messages from the database
-      const allMessages = await Message.find({}).populate("user", "name");
+      const allMessages = await Message.find({})
+        .populate("user", "name")
+        .sort({ timestamp: -1 });
       // Render the logged-in page and the messages data
       res.render("messages", { user: req.user, messages: allMessages });
     } catch (err) {

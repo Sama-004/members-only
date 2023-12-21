@@ -32,7 +32,7 @@
                     <strong>
                         <%= message.title %>
                     </strong><br>
-                    <em>From: <%= message.name %> <br> On - <%= message.timestamp %></em><br>
+                    <em>From: <%= message.user.name %> <br> On - <%= message.timestamp %></em><br>
                     <%= message.text %>
                 </li><br>
                 <% }); %>

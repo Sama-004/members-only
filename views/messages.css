@@ -14,6 +14,10 @@ h2 {
   margin-top: 20px;
 }
 
+.right {
+  float: right;
+  margin-left: 20px;
+}
 /* Styles for buttons */
 button {
   padding: 10px 20px;

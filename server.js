@@ -169,7 +169,7 @@ app.post("/postmessage", async (req, res) => {
     dateStyle: "medium",
     timeStyle: "long",
   });
-  console.log(formattedDate);
+  // console.log(formattedDate);
   // Assuming you have a Message model
   const newMessage = new Message({
     title: title,

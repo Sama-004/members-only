@@ -10,6 +10,8 @@ const Schema = mongoose.Schema;
 const app = express();
 const Message = require("./models/messages");
 const User = require("./models/users");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // Set up mongoose connection
 const mongoDB = process.env.MONGODB_URL;
@@ -20,18 +22,6 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
-// const User = mongoose.model(
-//   "User",
-//   new Schema({
-//     name: { type: String, required: true },
-//     email: {
-//       type: String,
-//       required: true,
-//       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-//     },
-//     password: { type: String, required: true },
-//   })
-// );
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -60,10 +50,18 @@ passport.use(
       if (!user) {
         return done(null, false, { message: "User not found" });
       }
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (err) {
+          return done(err);
+        }
+        if (!result) {
+          return done(null, false, { message: "Incorrect password" });
+        }
+        return done(null, user);
+      });
+      // if (passwordMatch) {
+      //   return done(null, false, { message: "Incorrect password" });
+      // }
     } catch (err) {
       return done(err);
     }
@@ -127,11 +125,12 @@ app.post("/signup", async (req, res, next) => {
         errorMessage: "Passwords do not match",
       });
     }
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     // If the user doesn't exist, create a new user
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword,
     });
     const result = await user.save();
     res.redirect("/");

@@ -19,6 +19,7 @@
 
     <!-- Button to toggle the message form -->
     <button onclick="toggleForm()">Post a Message</button>
+    <button class="right" onclick="window.location.href='/signup'">Signup</button>
     <button class="right" onclick="window.location.href='/login'">Login</button>
     <button class="right" onclick="window.location.href='/'">Home</button>
 
@@ -34,7 +35,7 @@
         <button type="submit" onclick="window.location.href='/login'">Login to post a message</button>
     </form>
 
-    <!-- Display messages -->
+    <!-- Display messages when the user is not loggedin-->
     <% if (messages.length> 0) { %>
         <h2>All Messages:</h2>
         <ul>

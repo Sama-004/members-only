@@ -46,8 +46,11 @@ app.use(express.static(path.join(__dirname, "views")));
 // res.render("home", { user: req.user });
 // });
 app.get("/", async (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect("/loggedin");
+  }
   const allMessages = await Message.find({}).sort({ timestamp: -1 });
-  res.render("home", { messages: allMessages });
+  res.render("home", { user: req.user, messages: allMessages });
 });
 
 passport.use(

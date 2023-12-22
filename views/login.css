@@ -59,6 +59,24 @@ button {
 button:hover {
   background-color: #45a049; /* Change this to your desired button hover color */
 }
+/* Style for the anchor tag as a button */
+a.home-button {
+  display: inline-block;
+  width: 70px;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #4caf50; /* Change to your desired button color */
+  color: white;
+  margin-left: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+a.home-button:hover {
+  background-color: #45a049; /* Change to your desired button hover color */
+}
 
 /* Error message styles */
 p {

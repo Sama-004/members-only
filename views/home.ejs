@@ -2,21 +2,57 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/messages.css">
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("postForm");
+            form.classList.toggle("visible");
+        }
+    </script>
 </head>
 
-
 <body>
-    <h1>Welcome to the message board</h1>
-    <h3>Select your option</h3>
-    <!-- <a href="/login">Login</a> -->
-    <button onclick="window.location.href='/login'">Login</button>
-    <br>
-    <br>
-    <!-- <a href="/signup">Signup</a> -->
-    <button onclick="window.location.href='/signup'">Signup</button>
+    <h1>Welcome</h1>
+
+
+    <!-- Button to toggle the message form -->
+    <button onclick="toggleForm()">Post a Message</button>
+    <button class="right" onclick="window.location.href='/login'">Login</button>
+    <button class="right" onclick="window.location.href='/'">Home</button>
+
+    <!-- Form to post messages -->
+    <form id="postForm" action="/postmessage" method="POST" class="form-style">
+        <h2>Post a Message:</h2>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit" onclick="window.location.href='/login'">Login to post a message</button>
+    </form>
+
+    <!-- Display messages -->
+    <% if (messages.length> 0) { %>
+        <h2>All Messages:</h2>
+        <ul>
+            <% messages.forEach(message=> { %>
+                <li>
+                    <strong>
+                        <%= message.title %>
+                    </strong><br>
+                    <em>From: <strong>
+                            Login to see sender's name
+                        </strong><br> On - <%= message.timestamp %></em><br>
+                    <%= message.text %>
+                </li><br>
+                <% }); %>
+        </ul>
+        <% } else { %>
+            <p>No messages available.</p>
+            <% } %>
 </body>
 
 </html>

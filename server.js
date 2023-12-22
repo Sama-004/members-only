@@ -42,8 +42,12 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "views")));
 
-app.get("/", (req, res) => {
-  res.render("home", { user: req.user });
+// app.get("/", (req, res) => {
+// res.render("home", { user: req.user });
+// });
+app.get("/", async (req, res) => {
+  const allMessages = await Message.find({}).sort({ timestamp: -1 });
+  res.render("home", { messages: allMessages });
 });
 
 passport.use(
@@ -161,7 +165,6 @@ app.get("/loggedin", async (req, res) => {
   }
 });
 
-// Assuming you're using Express.js
 app.post("/postmessage", async (req, res) => {
   const { title, message } = req.body;
   const formattedDate = new Date(Date.now()).toLocaleString("en-US", {
@@ -170,7 +173,6 @@ app.post("/postmessage", async (req, res) => {
     timeStyle: "long",
   });
   // console.log(formattedDate);
-  // Assuming you have a Message model
   const newMessage = new Message({
     title: title,
     text: message,
@@ -187,9 +189,5 @@ app.post("/postmessage", async (req, res) => {
     res.redirect("/error"); // Redirect to an error page
   }
 });
-
-// app.get("/loggedin", (req, res) => {
-//   res.send("HURRAY login done correctly");
-// });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

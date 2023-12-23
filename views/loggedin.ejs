@@ -22,6 +22,7 @@
 
     <!-- Buttons for actions -->
     <button onclick="toggleForm()">Post a Message</button>
+    <button onclick="toggleAccess()">Join Club</button>
     <button class="right" onclick="window.location.href='/logout'">Logout</button>
 
     <!-- Form to post messages -->
@@ -36,6 +37,11 @@
         <button type="submit">Post Message</button>
     </form>
 
+    <!-- Access key input box (initially hidden) -->
+    <form id="accessKey" action="/access-messages" method="POST" class="form-style">
+        <input type="text" name="accessKey" placeholder="Enter access key">
+        <button type="submit">Submit</button>
+    </form>
 
 
     <!-- Display messages -->
@@ -53,9 +59,6 @@
                             <strong>
                                 <%= message.title %>
                             </strong><br>
-                            <em>From: <strong>
-                                    <%= message.user.name %>
-                                </strong><br> On - <%= message.timestamp %></em><br>
                             <%= message.text %>
                         </li><br>
                         <% }); %>

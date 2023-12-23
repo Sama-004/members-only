@@ -3,6 +3,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0; /* Change this to your desired background color */
   padding: 20px;
+  font-size: 27px;
 }
 
 /* Styles for headers */
@@ -14,6 +15,13 @@ h2 {
   margin-top: 20px;
 }
 
+#allmessage {
+  text-align: center;
+}
+.access-key-input {
+  display: none;
+}
+
 .right {
   float: right;
   margin-left: 20px;
@@ -22,6 +30,7 @@ h2 {
 button {
   padding: 10px 20px;
   border: none;
+  font-size: 20px;
   border-radius: 4px;
   background-color: #4caf50; /* Change this to your desired button color */
   color: white;

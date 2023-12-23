@@ -6,6 +6,7 @@ body {
   height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
+  font-size: 25px;
   background-color: #f0f0f0; /* Change this to your desired background color */
 }
 
@@ -53,6 +54,7 @@ button {
   border-radius: 4px;
   background-color: #4caf50; /* Change this to your desired button color */
   color: white;
+  font-size: 25px;
   cursor: pointer;
 }
 

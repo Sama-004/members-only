@@ -153,17 +153,57 @@ app.get("/loggedin", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       // Fetch all messages from the database
+      let errorMessage = "";
       const allMessages = await Message.find({})
         .populate("user", "name")
         .sort({ timestamp: -1 });
       // Render the logged-in page and the messages data
-      res.render("messages", { user: req.user, messages: allMessages });
+      res.render("loggedin", {
+        user: req.user,
+        messages: allMessages,
+        errorMessage,
+      });
     } catch (err) {
       console.error("Error fetching messages:", err);
       res.redirect("/error"); // Redirect to an error page
     }
   } else {
     res.redirect("/login"); // Redirect to login
+  }
+});
+
+app.post("/access-messages", async (req, res) => {
+  let errorMessage = "";
+  const enteredKey = req.body.accessKey;
+  const correctKey = "fusb0l"; // Replace 'yourSecretKey' with the actual key
+
+  if (enteredKey === correctKey) {
+    try {
+      // Fetch all messages from the database
+      const allMessages = await Message.find({})
+        .populate("user", "name")
+        .sort({ timestamp: -1 });
+      // Render the logged-in page and the messages data
+      res.render("messages", {
+        user: req.user,
+        messages: allMessages,
+        errorMessage: null,
+      });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.redirect("/error"); // Redirect to an error page
+    }
+  } else {
+    // Incorrect key entered, restrict access
+    errorMessage = "Invalid Key";
+    const allMessages = await Message.find({})
+      .populate("user", "name")
+      .sort({ timestamp: -1 });
+    res.render("loggedin", {
+      user: req.user,
+      messages: allMessages,
+      errorMessage: errorMessage,
+    });
   }
 });
 

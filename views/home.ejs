@@ -14,9 +14,6 @@
 </head>
 
 <body>
-    <h1>Welcome</h1>
-
-
     <!-- Button to toggle the message form -->
     <button onclick="toggleForm()">Post a Message</button>
     <button class="right" onclick="window.location.href='/signup'">Signup</button>
@@ -37,17 +34,17 @@
 
     <!-- Display messages when the user is not loggedin-->
     <% if (messages.length> 0) { %>
-        <h2>All Messages:</h2>
+        <h2 id="allmessage">Messages:</h2>
         <ul>
             <% messages.forEach(message=> { %>
                 <li>
                     <strong>
                         <%= message.title %>
                     </strong><br>
-                    <em>From: <strong>
-                            Login to see sender's name
-                        </strong><br> On - <%= message.timestamp %></em><br>
                     <%= message.text %>
+                        <br>
+                        <em><strong>Note: </strong>
+                            Become a member to get the sender's name and time
                 </li><br>
                 <% }); %>
         </ul>

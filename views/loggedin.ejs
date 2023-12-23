@@ -56,16 +56,22 @@
                 <ul>
                     <% messages.forEach(message=> { %>
                         <li>
-                            <strong>
-                                <%= message.title %>
-                            </strong><br>
-                            <%= message.text %>
+                            <div class="message-box">
+                                <strong>
+                                    <%= message.title %>
+                                </strong><br>
+                                <%= message.text %>
+                                    <br>
+                                    <em id="note"><strong>Note: </strong>
+                                        Become a member to get the sender's name and time</em>
                         </li><br>
                         <% }); %>
                 </ul>
+                </div>
                 <% } else { %>
                     <p>No messages available.</p>
                     <% } %>
+
 </body>
 
 </html>

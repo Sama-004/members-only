@@ -72,9 +72,36 @@ p {
   text-align: center;
 }
 
+/* Add a box around the messages */
+/* Add a box around the messages */
 ul {
   list-style: none;
   padding: 10;
+  /*border: 1px solid #ccc; /* Border style for the box */
+  /*border-radius: 8px;*/
+  /* background-color: #fff;*/
+  padding: 20px;
+}
+
+.message-box em strong:first-of-type::before {
+  content: "";
+  display: block;
+  border-top: 1px solid #ccc; /* Line style */
+  margin-top: 20px;
+  padding-top: 5px;
+}
+
+#note {
+  font-size: 15px;
+}
+
+.message-box {
+  border: 1px solid #ccc; /* Border style for each message box */
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px; /* Spacing between message boxes */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 li {

@@ -37,6 +37,6 @@ npm run devstart
 - [Expressjs](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
 - [Mongoosejs](https://mongoosejs.com/)
-- [Passportjs] (https://www.passportjs.org/)
+- [Passportjs](https://www.passportjs.org/)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
-- [EJS] (https://ejs.co/)
+- [EJS](https://ejs.co/)

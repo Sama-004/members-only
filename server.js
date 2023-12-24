@@ -12,6 +12,7 @@ const Message = require("./models/messages");
 const User = require("./models/users");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const flash = require("connect-flash");
 
 // Set up mongoose connection
 const mongoDB = process.env.MONGODB_URL;
@@ -29,6 +30,7 @@ app.set("view engine", "ejs");
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "views")));
 
@@ -89,17 +91,24 @@ app.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/loggedin",
-    failureRedirect: "/loginfail?error=wrongpassword",
+    failureRedirect: "/loginfail",
+    failureFlash: true,
   })
 );
 
 app.get("/loginfail", (req, res) => {
-  let errorMessage = "";
-  if (req.query.error === "wrongpassword") {
-    errorMessage = "Incorrect password. Please try again.";
+  let errorMessage = req.flash("error")[0];
+  if (errorMessage === "User not found") {
+    errorMessage = "User does not exist";
+  } else if (errorMessage === "Incorrect password") {
+    errorMessage = "Incorrect password";
+  } else {
+    errorMessage = "Unknown error occurred";
   }
+
   res.render("login", { user: req.user, errorMessage });
 });
+
 app.get("/signup", (req, res) => {
   res.render("sign-up-form", { errorMessage: null }); // Empty error message on the first request
 });

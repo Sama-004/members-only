@@ -20,6 +20,7 @@
 <body>
     <h1>Welcome <%= user.name %>!</h1>
 
+
     <!-- Buttons for actions -->
     <button onclick="toggleForm()">Post a Message</button>
     <button onclick="toggleAccess()">Join Club</button>
@@ -43,14 +44,12 @@
         <button type="submit">Submit</button>
     </form>
 
-
-    <!-- Display messages -->
-    <% if (errorMessage) { %>
-        <p>
+    <% if(errorMessage) { %>
+        <p style="color: red;">
             <%= errorMessage %>
         </p>
         <% } %>
-
+            <!-- Display messages -->
             <% if (messages.length> 0) { %>
                 <h2 id="allmessage">Messages:</h2>
                 <ul>
@@ -60,14 +59,14 @@
                                 <strong>
                                     <%= message.title %>
                                 </strong><br>
-                                <%= message.text %>
-                                    <br>
-                                    <em id="note"><strong>Note: </strong>
-                                        Become a member to get the sender's name and time</em>
-                        </li><br>
+                                <%= message.text %><br>
+                                    <em class="note"><strong>Note: </strong> Become a member to get the sender's name
+                                        and
+                                        time</em>
+                            </div>
+                        </li>
                         <% }); %>
                 </ul>
-                </div>
                 <% } else { %>
                     <p>No messages available.</p>
                     <% } %>

@@ -176,7 +176,6 @@ app.post("/access-messages", async (req, res) => {
   let errorMessage = "";
   const enteredKey = req.body.accessKey;
   const correctKey = "fusb0l"; // Replace 'yourSecretKey' with the actual key
-
   if (enteredKey === correctKey) {
     try {
       // Fetch all messages from the database

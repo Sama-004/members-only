@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Logged In</title>
+    <link rel="stylesheet" href="/messages.css">
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("postForm");
+            form.classList.toggle("visible");
+        }
+        function toggleAccess() {
+            var form = document.getElementById("accessKey");
+            form.classList.toggle("visible");
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Welcome <%= user.name %>!</h1>
+
+
+    <!-- Buttons for actions -->
+    <button onclick="toggleForm()">Post a Message</button>
+    <button onclick="toggleAccess()">Join Club</button>
+    <button class="right" onclick="window.location.href='/logout'">Logout</button>
+
+    <!-- Form to post messages -->
+    <form id="postForm" action="/postmessage" method="POST" class="form-style">
+        <h2>Post a Message:</h2>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Post Message</button>
+    </form>
+
+    <!-- Access key input box (initially hidden) -->
+    <form id="accessKey" action="/access-messages" method="POST" class="form-style">
+        <input type="text" name="accessKey" placeholder="Enter access key">
+        <button type="submit">Submit</button>
+    </form>
+
+    <% if(errorMessage) { %>
+        <p style="color: red;">
+            <%= errorMessage %>
+        </p>
+        <% } %>
+            <!-- Display messages -->
+            <% if (messages.length> 0) { %>
+                <h2 id="allmessage">Messages:</h2>
+                <ul>
+                    <% messages.forEach(message=> { %>
+                        <li>
+                            <div class="message-box">
+                                <strong>
+                                    <%= message.title %>
+                                </strong><br>
+                                <%= message.text %><br>
+                                    <em class="note"><strong>Note: </strong> Become a member to get the sender's name
+                                        and
+                                        time</em>
+                            </div>
+                        </li>
+                        <% }); %>
+                </ul>
+                <% } else { %>
+                    <p>No messages available.</p>
+                    <% } %>
+
+</body>
+
+</html>

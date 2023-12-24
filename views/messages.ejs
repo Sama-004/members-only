@@ -10,14 +10,17 @@
             var form = document.getElementById("postForm");
             form.classList.toggle("visible");
         }
+        function toggleAccess() {
+            var form = document.getElementById("accessKey");
+            form.classList.toggle("visible");
+        }
     </script>
 </head>
 
 <body>
     <h1>Welcome <%= user.name %>!</h1>
 
-
-    <!-- Button to toggle the message form -->
+    <!-- Buttons for actions -->
     <button onclick="toggleForm()">Post a Message</button>
     <button class="right" onclick="window.location.href='/logout'">Logout</button>
 
@@ -33,20 +36,23 @@
         <button type="submit">Post Message</button>
     </form>
 
-    <!-- Display messages -->
+
+
     <% if (messages.length> 0) { %>
-        <h2>All Messages:</h2>
+        <h2 id="allmessage">Messages:</h2>
         <ul>
             <% messages.forEach(message=> { %>
                 <li>
-                    <strong>
-                        <%= message.title %>
-                    </strong><br>
-                    <em>From: <strong>
-                            <%= message.user.name %>
-                        </strong><br> On - <%= message.timestamp %></em><br>
-                    <%= message.text %>
-                </li><br>
+                    <div class="message-box">
+                        <strong>
+                            <%= message.title %>
+                        </strong><br>
+                        <%= message.text %><br>
+                            <em><strong>
+                                    From: <%= message.user.name %> <br>
+                                </strong> On - <%= message.timestamp %></em><br>
+                    </div>
+                </li>
                 <% }); %>
         </ul>
         <% } else { %>

@@ -12,6 +12,7 @@ const Message = require("./models/messages");
 const User = require("./models/users");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const flash = require("connect-flash");
 
 // Set up mongoose connection
 const mongoDB = process.env.MONGODB_URL;
@@ -29,6 +30,7 @@ app.set("view engine", "ejs");
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "views")));
 
@@ -89,17 +91,24 @@ app.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/loggedin",
-    failureRedirect: "/loginfail?error=wrongpassword",
+    failureRedirect: "/loginfail",
+    failureFlash: true,
   })
 );
 
 app.get("/loginfail", (req, res) => {
-  let errorMessage = "";
-  if (req.query.error === "wrongpassword") {
-    errorMessage = "Incorrect password. Please try again.";
+  let errorMessage = req.flash("error")[0];
+  if (errorMessage === "User not found") {
+    errorMessage = "User does not exist";
+  } else if (errorMessage === "Incorrect password") {
+    errorMessage = "Incorrect password";
+  } else {
+    errorMessage = "Unknown error occurred";
   }
+
   res.render("login", { user: req.user, errorMessage });
 });
+
 app.get("/signup", (req, res) => {
   res.render("sign-up-form", { errorMessage: null }); // Empty error message on the first request
 });
@@ -153,11 +162,16 @@ app.get("/loggedin", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       // Fetch all messages from the database
+      let errorMessage = "";
       const allMessages = await Message.find({})
         .populate("user", "name")
         .sort({ timestamp: -1 });
       // Render the logged-in page and the messages data
-      res.render("messages", { user: req.user, messages: allMessages });
+      res.render("loggedin", {
+        user: req.user,
+        messages: allMessages,
+        errorMessage,
+      });
     } catch (err) {
       console.error("Error fetching messages:", err);
       res.redirect("/error"); // Redirect to an error page
@@ -167,10 +181,44 @@ app.get("/loggedin", async (req, res) => {
   }
 });
 
+app.post("/access-messages", async (req, res) => {
+  let errorMessage = "";
+  const enteredKey = req.body.accessKey;
+  const correctKey = "futb0l";
+  if (enteredKey === correctKey) {
+    try {
+      // Fetch all messages from the database
+      const allMessages = await Message.find({})
+        .populate("user", "name")
+        .sort({ timestamp: -1 });
+      // Render the logged-in page and the messages data
+      res.render("messages", {
+        user: req.user,
+        messages: allMessages,
+        errorMessage: null,
+      });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      res.redirect("/error"); // Redirect to an error page
+    }
+  } else {
+    // Incorrect key entered, restrict access
+    errorMessage = "Invalid Key";
+    const allMessages = await Message.find({})
+      .populate("user", "name")
+      .sort({ timestamp: -1 });
+    res.render("loggedin", {
+      user: req.user,
+      messages: allMessages,
+      errorMessage: errorMessage,
+    });
+  }
+});
+
 app.post("/postmessage", async (req, res) => {
   const { title, message } = req.body;
   const formattedDate = new Date(Date.now()).toLocaleString("en-US", {
-    timeZone: "Asia/Kolkata", // Change this to your desired timezone
+    timeZone: "Asia/Kolkata",
     dateStyle: "medium",
     timeStyle: "long",
   });

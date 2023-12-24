@@ -3,3 +3,4 @@ node_modules/
 text.txt
 populatedb.js
 test.txt
+views/home.css

@@ -184,7 +184,7 @@ app.get("/loggedin", async (req, res) => {
 app.post("/access-messages", async (req, res) => {
   let errorMessage = "";
   const enteredKey = req.body.accessKey;
-  const correctKey = "fusb0l"; // Replace 'yourSecretKey' with the actual key
+  const correctKey = "futb0l";
   if (enteredKey === correctKey) {
     try {
       // Fetch all messages from the database
@@ -218,7 +218,7 @@ app.post("/access-messages", async (req, res) => {
 app.post("/postmessage", async (req, res) => {
   const { title, message } = req.body;
   const formattedDate = new Date(Date.now()).toLocaleString("en-US", {
-    timeZone: "Asia/Kolkata", // Change this to your desired timezone
+    timeZone: "Asia/Kolkata",
     dateStyle: "medium",
     timeStyle: "long",
   });

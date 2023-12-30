@@ -12,8 +12,8 @@ To get started, follow these steps:
 1. Clone the repo and install npm packages
 
 ```sh
-git clone git@github.com:username/repo.git
-cd repo/
+git clone git@github.com:Sama-004/members-only.git
+cd members-only/
 npm install
 ```
 
